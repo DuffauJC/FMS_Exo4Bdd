@@ -3,6 +3,7 @@ package fr.fms;
 import java.sql.Connection;
 
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +13,14 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import fr.fms.bdd.CreateConfigFile;
+import fr.fms.entities.Article;
 
-public class TestJdbc {
+public class ShopApp {
 
-
+	private static String url;
+	private static String login;
+	private static String password;
+	private static String driver;
 
 	/**
 	 * 
@@ -23,20 +28,15 @@ public class TestJdbc {
 	 * @throws Exception
 	 */
 	public static void main(String[] args)throws Exception {
-
-
+		
 		// récupérer une connection à partir d'une url + id + pwd
 		CreateConfigFile config=new CreateConfigFile();
 		Properties prop = config.readPropertiesFile("config.properties");
-		
 
-		String url=prop.getProperty("db.url");
-		String login=prop.getProperty("db.login");
-		String password=prop.getProperty("db.password");
-		String driver=prop.getProperty("db.driver.class");
-
-
-		ArrayList<Article> articles =new ArrayList<Article>();
+		url=prop.getProperty("db.url");
+		login=prop.getProperty("db.login");
+		password=prop.getProperty("db.password");
+		driver=prop.getProperty("db.driver.class");
 
 		// enregistre la class auprès du driver manager
 		// (charge le pilote)
@@ -45,7 +45,9 @@ public class TestJdbc {
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		
+		}	
+		ArrayList<Article> articles =new ArrayList<Article>();
 
 		// insertion d'un article
 		Article art=new Article("Antivrus","Norton",34.99 );
@@ -187,6 +189,7 @@ public class TestJdbc {
 	 * @param login
 	 * @param password
 	 */
+	
 	private static void readArticles(ArrayList<Article> articles, String url, String login, String password) {
 		try(Connection connection=DriverManager.getConnection(url,login,password)){// connection de java sql
 			String strSql="SELECT * FROM T_articles";						// une fois connecté, réalisation d'un requête
@@ -212,6 +215,7 @@ public class TestJdbc {
 		}
 
 	}
+	 
 
 }
 

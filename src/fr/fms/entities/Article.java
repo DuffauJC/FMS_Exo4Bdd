@@ -1,4 +1,4 @@
-package fr.fms;
+package fr.fms.entities;
 
 public class Article {
 	
